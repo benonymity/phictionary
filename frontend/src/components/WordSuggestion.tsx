@@ -61,12 +61,12 @@ export function WordSuggestion() {
   }
 
   return (
-    <div className="p-8">
-      <div className="max-w-md mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-slate-800 mb-3">Suggest a Word</h2>
-        </div>
+    <div className="p-4 sm:p-8">
+      <div className="text-left mb-6 sm:mb-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Suggest</h2>
+      </div>
 
+      <div className="max-w-md mx-auto">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="word" className="block text-sm font-semibold text-slate-700 mb-2">
@@ -79,7 +79,7 @@ export function WordSuggestion() {
               onChange={handleWordChange}
               placeholder="Enter a word with 'ph' (max 25 characters)"
               maxLength={25}
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg font-medium"
+              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg font-medium"
               disabled={loading}
             />
             <div className="mt-1 text-sm text-slate-500">
@@ -104,7 +104,7 @@ export function WordSuggestion() {
           <button
             type="submit"
             disabled={loading || !word.trim()}
-            className="w-full flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-semibold text-lg"
+            className="w-full flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-semibold text-base sm:text-lg"
           >
             {loading ? (
               <>

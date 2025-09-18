@@ -176,22 +176,85 @@ export function WordList() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 sm:p-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-slate-800 mb-2">Word Collection</h2>
-          <p className="text-slate-600">Browse through our curated collection of words</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Rankings</h2>
         </div>
         <button
           onClick={handleRefresh}
-          className="flex items-center px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-medium"
+          className="flex items-center justify-center px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-medium w-full sm:w-auto"
         >
           <RefreshCw className="w-4 h-4 mr-2" />
           Refresh
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      {/* Mobile Card Layout */}
+      <div className="block sm:hidden space-y-3">
+        {words && words.map((word, index) => (
+          <div 
+            key={`${word.word}-${index}`} 
+            className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 hover:shadow-md transition-shadow"
+            onTouchStart={() => setHoveredWord(word.word)}
+            onTouchEnd={() => setHoveredWord(null)}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-lg font-semibold text-slate-900">{word.word}</div>
+              <div className={`text-sm font-bold px-2 py-1 rounded-full ${
+                word.score > 0 ? 'text-emerald-700 bg-emerald-100' :
+                word.score < 0 ? 'text-red-700 bg-red-100' :
+                'text-slate-600 bg-slate-100'
+              }`}>
+                {word.score}
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-4">
+                <div className="text-sm font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                  ↑ {word.upvotes}
+                </div>
+                <div className="text-sm font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full">
+                  ↓ {word.downvotes}
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => handleVote(word.word, 'upvote')}
+                disabled={hasUserVotedOnWord(word.word) || votingWords.has(word.word)}
+                className={`flex-1 flex items-center justify-center px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+                  hasUserVotedOnWord(word.word)
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed'
+                }`}
+                title={hasUserVotedOnWord(word.word) ? 'You have already voted on this word' : 'Upvote this word'}
+              >
+                <ThumbsUp className="w-4 h-4 mr-1" />
+                Upvote
+              </button>
+              <button
+                onClick={() => handleVote(word.word, 'downvote')}
+                disabled={hasUserVotedOnWord(word.word) || votingWords.has(word.word)}
+                className={`flex-1 flex items-center justify-center px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+                  hasUserVotedOnWord(word.word)
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-red-100 hover:bg-red-200 text-red-700 disabled:opacity-50 disabled:cursor-not-allowed'
+                }`}
+                title={hasUserVotedOnWord(word.word) ? 'You have already voted on this word' : 'Downvote this word'}
+              >
+                <ThumbsDown className="w-4 h-4 mr-1" />
+                Downvote
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table Layout */}
+      <div className="hidden sm:block bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-slate-50">
@@ -286,7 +349,7 @@ export function WordList() {
         )}
       </div>
 
-      <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200">
+      <div className="flex flex-col sm:flex-row items-center justify-between mt-6 sm:mt-8 pt-6 border-t border-slate-200 gap-4">
         <div className="text-sm text-slate-600 font-medium">
           Page {pageNumber} • {words ? words.length : 0} words
         </div>
@@ -294,18 +357,18 @@ export function WordList() {
           <button
             onClick={handlePreviousPage}
             disabled={pageNumber === 1}
-            className="flex items-center px-4 py-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors font-medium text-slate-700"
+            className="flex items-center px-3 py-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed text-slate-700 rounded-lg transition-colors font-medium"
           >
-            <ChevronLeft className="w-4 h-4 mr-2" />
+            <ChevronLeft className="w-4 h-4 mr-1" />
             Previous
           </button>
           <button
             onClick={handleNextPage}
             disabled={!words || words.length < pageSize}
-            className="flex items-center px-4 py-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors font-medium text-slate-700"
+            className="flex items-center px-3 py-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed text-slate-700 rounded-lg transition-colors font-medium"
           >
             Next
-            <ChevronRight className="w-4 h-4 ml-2" />
+            <ChevronRight className="w-4 h-4 ml-1" />
           </button>
         </div>
       </div>

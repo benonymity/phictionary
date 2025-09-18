@@ -160,11 +160,11 @@ export function VotingMode({}: VotingModeProps) {
 
   if (loading) {
     return (
-      <div className="p-8">
-        <div className="flex items-center justify-center p-12">
+      <div className="p-4 sm:p-8">
+        <div className="flex items-center justify-center p-8 sm:p-12">
           <div className="text-center">
-            <RefreshCw className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <span className="text-lg text-slate-600 font-medium">Loading word...</span>
+            <RefreshCw className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-blue-600 mx-auto mb-4" />
+            <span className="text-base sm:text-lg text-slate-600 font-medium">Loading word...</span>
           </div>
         </div>
       </div>
@@ -173,9 +173,9 @@ export function VotingMode({}: VotingModeProps) {
 
   if (error && !currentWord) {
     return (
-      <div className="p-8">
-        <div className="text-center p-12">
-          <div className="text-red-600 mb-6 text-lg font-medium">Error: {error}</div>
+      <div className="p-4 sm:p-8">
+        <div className="text-center p-8 sm:p-12">
+          <div className="text-red-600 mb-6 text-base sm:text-lg font-medium">Error: {error}</div>
           <button
             onClick={() => fetchRandomWord()}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
@@ -188,8 +188,11 @@ export function VotingMode({}: VotingModeProps) {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 sm:p-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Vote</h2>
+        </div>
         <button
           onClick={() => fetchRandomWord()}
           className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
@@ -201,13 +204,13 @@ export function VotingMode({}: VotingModeProps) {
 
       {currentWord && (
         <div className="max-w-lg mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-12">
-            <div className="text-center space-y-8">
+          <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-slate-200 p-6 sm:p-12">
+            <div className="text-center space-y-6 sm:space-y-8">
               <div>
-                <h3 className="text-6xl font-bold text-slate-900 mb-6 tracking-tight">
+                <h3 className="text-4xl sm:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 tracking-tight">
                   {currentWord.word}
                 </h3>
-                <div className="flex justify-center space-x-8 text-sm">
+                <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-8 text-sm">
                   <div className="flex items-center space-x-2 text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full">
                     <span className="font-semibold">↑</span>
                     <span className="font-bold">{currentWord.upvotes}</span>
@@ -234,31 +237,31 @@ export function VotingMode({}: VotingModeProps) {
               )}
 
 
-              <div className="flex justify-center space-x-6">
+              <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
                 <button
                   onClick={() => handleVote('upvote')}
                   disabled={voting || (currentWord && hasUserVotedOnWord(currentWord.word))}
-                  className={`flex items-center px-8 py-4 rounded-xl transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+                  className={`flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-200 font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
                     currentWord && hasUserVotedOnWord(currentWord.word)
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white'
                   }`}
                   title={currentWord && hasUserVotedOnWord(currentWord.word) ? 'You have already voted on this word' : 'Upvote this word'}
                 >
-                  <ThumbsUp className="w-6 h-6 mr-3" />
+                  <ThumbsUp className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                   Upvote
                 </button>
                 <button
                   onClick={() => handleVote('downvote')}
                   disabled={voting || (currentWord && hasUserVotedOnWord(currentWord.word))}
-                  className={`flex items-center px-8 py-4 rounded-xl transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+                  className={`flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-200 font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
                     currentWord && hasUserVotedOnWord(currentWord.word)
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white'
                   }`}
                   title={currentWord && hasUserVotedOnWord(currentWord.word) ? 'You have already voted on this word' : 'Downvote this word'}
                 >
-                  <ThumbsDown className="w-6 h-6 mr-3" />
+                  <ThumbsDown className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                   Downvote
                 </button>
               </div>
