@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
-import { ThumbsUp, ThumbsDown, RefreshCw, ArrowLeft } from 'lucide-react'
-import { PhictionaryAPI, Word } from '../api/client'
+import { ThumbsUp, ThumbsDown, RefreshCw } from 'lucide-react'
+import { PhictionaryAPI, type Word } from '../api/client'
 
 interface VotingModeProps {
   onBack: () => void
 }
 
-export function VotingMode({ onBack }: VotingModeProps) {
+export function VotingMode({}: VotingModeProps) {
   const [currentWord, setCurrentWord] = useState<Word | null>(null)
   const [loading, setLoading] = useState(true)
   const [voting, setVoting] = useState(false)
@@ -157,11 +157,6 @@ export function VotingMode({ onBack }: VotingModeProps) {
     }
   }
 
-  const getScoreColor = (score: number) => {
-    if (score > 0) return 'text-green-600'
-    if (score < 0) return 'text-red-600'
-    return 'text-gray-600'
-  }
 
   if (loading) {
     return (
@@ -182,7 +177,7 @@ export function VotingMode({ onBack }: VotingModeProps) {
         <div className="text-center p-12">
           <div className="text-red-600 mb-6 text-lg font-medium">Error: {error}</div>
           <button
-            onClick={fetchRandomWord}
+            onClick={() => fetchRandomWord()}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
           >
             Try Again

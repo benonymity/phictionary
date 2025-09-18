@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, RefreshCw, ThumbsUp, ThumbsDown } from 'lucide-react'
-import { PhictionaryAPI, Word } from '../api/client'
+import { PhictionaryAPI, type Word } from '../api/client'
 
 export function WordList() {
   const [words, setWords] = useState<Word[]>([])
@@ -151,11 +151,6 @@ export function WordList() {
     }
   }
 
-  const getScoreColor = (score: number) => {
-    if (score > 0) return 'text-green-600'
-    if (score < 0) return 'text-red-600'
-    return 'text-gray-600'
-  }
 
   if (loading) {
     return (

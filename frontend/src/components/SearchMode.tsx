@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Search, ThumbsUp, ThumbsDown, RefreshCw, ArrowLeft } from 'lucide-react'
-import { PhictionaryAPI, SearchWord } from '../api/client'
+import { Search, ThumbsUp, ThumbsDown, RefreshCw } from 'lucide-react'
+import { PhictionaryAPI, type SearchWord } from '../api/client'
 
 interface SearchModeProps {
   onBack: () => void
 }
 
-export function SearchMode({ onBack }: SearchModeProps) {
+export function SearchMode({}: SearchModeProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<SearchWord[]>([])
   const [loading, setLoading] = useState(false)
