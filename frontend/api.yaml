@@ -1,0 +1,199 @@
+openapi: 3.0.3
+info:
+  title: Phictionary API
+  version: "1.0"
+  description: API for paginated word retrieval and voting in the Phictionary app.
+
+servers:
+  - url: https://fvhtzgyrqcofpahuaazv.supabase.co/rest/v1
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    PaginatedWordsRequest:
+      type: object
+      properties:
+        page_size:
+          type: integer
+          example: 20
+        page_number:
+          type: integer
+          example: 1
+      required:
+        - page_size
+        - page_number
+    WordVoteRequest:
+      type: object
+      properties:
+        target:
+          type: string
+          description: The word to upvote or downvote.
+          example: phable
+      required:
+        - target
+    Word:
+      type: object
+      properties:
+        word:
+          type: string
+        upvotes:
+          type: integer
+        downvotes:
+          type: integer
+        score:
+          type: integer
+    PaginatedWordsResponse:
+      type: object
+      properties:
+        words:
+          type: array
+          items:
+            $ref: '#/components/schemas/Word'
+    SearchWordsRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: The search query to find similar words
+          example: phable
+        limit_count:
+          type: integer
+          description: Maximum number of results to return
+          example: 10
+          default: 10
+      required:
+        - query
+    SearchWord:
+      type: object
+      properties:
+        word:
+          type: string
+        upvotes:
+          type: integer
+        downvotes:
+          type: integer
+        score:
+          type: integer
+        similarity:
+          type: number
+          format: float
+          description: Similarity score between 0 and 1
+
+security:
+  - ApiKeyAuth: []
+    BearerAuth: []
+
+paths:
+  /rpc/get_words_paginated:
+    post:
+      summary: Get paginated list of words
+      operationId: getWordsPaginated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaginatedWordsRequest'
+      responses:
+        '200':
+          description: Paginated list of words
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWordsResponse'
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+      security:
+        - ApiKeyAuth: []
+          BearerAuth: []
+
+  /rpc/get_random_word:
+    post:
+      summary: Get a word
+      operationId: getWord
+      responses:
+        '200':
+          description: Word
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Word'
+
+  /rpc/upvote_word:
+    post:
+      summary: Upvote a word
+      operationId: upvoteWord
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordVoteRequest'
+      responses:
+        '200':
+          description: Word upvoted successfully
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+      security:
+        - ApiKeyAuth: []
+          BearerAuth: []
+
+  /rpc/downvote_word:
+    post:
+      summary: Downvote a word
+      operationId: downvoteWord
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordVoteRequest'
+      responses:
+        '200':
+          description: Word downvoted successfully
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+      security:
+        - ApiKeyAuth: []
+          BearerAuth: []
+
+  /rpc/search_words:
+    post:
+      summary: Search for words using fuzzy matching
+      operationId: searchWords
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchWordsRequest'
+      responses:
+        '200':
+          description: List of matching words with similarity scores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchWord'
+        '401':
+          description: Unauthorized
+        '400':
+          description: Bad Request
+      security:
+        - ApiKeyAuth: []
+          BearerAuth: []
