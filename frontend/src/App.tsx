@@ -21,7 +21,7 @@ function App() {
             Phictionary
           </h1>
           <p className="text-lg text-slate-600 max-w-md mx-auto">
-            Discover and vote on amazing words to help curate the best collection
+            Contribute to the best collection of words the world has ever seen
           </p>
         </header>
 
